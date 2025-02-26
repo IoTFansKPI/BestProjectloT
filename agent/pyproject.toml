@@ -13,7 +13,7 @@ dependencies = [
 ]
 
 [tool.poetry]
-packages = [{include = "agent", from = "src"}]
+package-mode = false
 
 
 [tool.poetry.group.test.dependencies]
