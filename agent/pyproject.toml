@@ -1,0 +1,31 @@
+[project]
+name = "agent"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Dmytro Shlapak",email = "bdlap.shl@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "paho-mqtt (==1.6.1)",
+    "marshmallow (>=3.26.1,<4.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "agent", from = "src"}]
+
+
+[tool.poetry.group.test.dependencies]
+pytest = "^8.3.4"
+
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.9.7"
+
+[tool.ruff.format]
+quote-style = "single"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
