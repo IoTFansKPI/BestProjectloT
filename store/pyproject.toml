@@ -3,15 +3,20 @@ name = "store"
 version = "0.1.0"
 description = ""
 authors = [
-    {name = "Viktor Pidhornyy",email = "viktor.podgornyy1@gmail.com"}
+    {name = "Dmytro Shlapak",email = "bdlap.shl@gmail.com"}
 ]
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "fastapi (>=0.115.11,<0.116.0)",
+    "sqlalchemy (>=2.0.38,<3.0.0)",
+    "pydantic-settings (>=2.8.1,<3.0.0)",
+    "alembic (>=1.15.1,<2.0.0)"
 ]
 
 [tool.poetry]
 packages = [{include = "store", from = "src"}]
+package-mode = false
 
 
 [build-system]
