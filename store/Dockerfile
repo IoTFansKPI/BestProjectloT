@@ -5,18 +5,18 @@ EXPOSE $PORT
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-RUN pip3 install poetry==1.8.4
+RUN pip3 install poetry
 
 
 WORKDIR /usr/store
 # copy the content of the local src directory to the working directory
 COPY . .
 
-ENV PYTHONPATH=/usr/store/src/
+ENV PYTHONPATH=/usr/store/src/store/
 
 # Creates a non-root user with an explicit UID and adds permission to access the /usr/store/src/ folder
 # For more info, please refer to https://aka.ms/vscode-docker-python-configure-containers
-RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /app
+RUN adduser -u 5678 --disabled-password --gecos "" appuser && chown -R appuser /usr/store
 USER appuser
 RUN chmod +x entrypoint.sh
 
