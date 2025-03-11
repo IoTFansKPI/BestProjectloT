@@ -14,11 +14,13 @@ from database.config import settings
 
 Base = declarative_base()
 
+DATABASE_URL = f"postgresql+asyncpg://{settings.POSTGRES_USER}:{settings.POSTGRES_PASSWORD}@{settings.POSTGRES_HOST}:{settings.POSTGRES_PORT}/{settings.POSTGRES_DB}"
+
 
 class DatabaseSessionManager:
     def __init__(self):
         self.engine: AsyncEngine | None = create_async_engine(
-            settings.DATABASE_URL,
+            DATABASE_URL,
             future=True,
             execution_options={
                 "supports_sane_rowcount_returning": False,

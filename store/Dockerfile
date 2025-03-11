@@ -24,4 +24,4 @@ ENTRYPOINT ["./entrypoint.sh"]
 
 EXPOSE $PORT
 
-CMD poetry run uvicorn src.fileshare.main:app --host 0.0.0.0 --port $PORT
+CMD poetry run uvicorn src.store.main:app --host 0.0.0.0 --port $PORT
