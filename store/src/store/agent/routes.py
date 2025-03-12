@@ -1,41 +1,49 @@
-from typing import List
+from typing import List, Annotated
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
 
 from agent.schemas import ProcessedAgentData, ProcessedAgentDataInDB
+from agent.service import AgentService
 
 agent_router = APIRouter()
 
+AgentService = Annotated[AgentService, Depends()]
 
-@agent_router.post("/processed_agent_data/")
-async def create_processed_agent_data(data: List[ProcessedAgentData]):
-    pass
+
+@agent_router.post("/")
+async def create_processed_agent_data(
+    data: List[ProcessedAgentData], service: AgentService
+):
+    data = await service.create_processed_data(
+        [ProcessedAgentDataInDB(**el.model_dump_flat()) for el in data]
+    )
+    return data
 
 
 @agent_router.get(
-    "/processed_agent_data/{processed_agent_data_id}",
+    "/{processed_agent_data_id}",
     response_model=ProcessedAgentDataInDB,
 )
 def read_processed_agent_data(processed_agent_data_id: int):
     pass
 
 
-@agent_router.get("/processed_agent_data/", response_model=list[ProcessedAgentDataInDB])
-def list_processed_agent_data():
-    pass
+@agent_router.get("/", response_model=list[ProcessedAgentDataInDB])
+async def list_processed_agent_data(service: AgentService):
+    data = await service.list_processed_data()
+    return data
 
 
 @agent_router.put(
-    "/processed_agent_data/{processed_agent_data_id}",
+    "/{processed_agent_data_id}",
     response_model=ProcessedAgentDataInDB,
 )
 def update_processed_agent_data(processed_agent_data_id: int, data: ProcessedAgentData):
     pass
 
 
-# Update data
 @agent_router.delete(
-    "/processed_agent_data/{processed_agent_data_id}",
+    "/{processed_agent_data_id}",
     response_model=ProcessedAgentDataInDB,
 )
 def delete_processed_agent_data(processed_agent_data_id: int):
