@@ -24,8 +24,11 @@ async def create_processed_agent_data(
     "/{processed_agent_data_id}",
     response_model=ProcessedAgentDataInDB,
 )
-def read_processed_agent_data(processed_agent_data_id: int):
-    pass
+async def read_processed_agent_data(
+    processed_agent_data_id: int, service: AgentService
+):
+    data = await service.getById(processed_agent_data_id)
+    return data
 
 
 @agent_router.get("/", response_model=list[ProcessedAgentDataInDB])
@@ -38,13 +41,20 @@ async def list_processed_agent_data(service: AgentService):
     "/{processed_agent_data_id}",
     response_model=ProcessedAgentDataInDB,
 )
-def update_processed_agent_data(processed_agent_data_id: int, data: ProcessedAgentData):
-    pass
+async def update_processed_agent_data(
+    processed_agent_data_id: int, data: ProcessedAgentData, service: AgentService
+):
+    result = await service.updateById(
+        processed_agent_data_id, ProcessedAgentDataInDB(**data.model_dump_flat())
+    )
+    return result
 
 
 @agent_router.delete(
     "/{processed_agent_data_id}",
-    response_model=ProcessedAgentDataInDB,
+    status_code=204,
 )
-def delete_processed_agent_data(processed_agent_data_id: int):
-    pass
+async def delete_processed_agent_data(
+    processed_agent_data_id: int, service: AgentService
+):
+    await service.deleteById(processed_agent_data_id)
