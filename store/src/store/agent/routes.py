@@ -5,6 +5,8 @@ from fastapi import APIRouter, Depends
 from agent.schemas import ProcessedAgentData, ProcessedAgentDataInDB
 from agent.service import AgentService
 
+from ws.core import manager
+
 agent_router = APIRouter()
 
 AgentService = Annotated[AgentService, Depends()]
@@ -14,10 +16,10 @@ AgentService = Annotated[AgentService, Depends()]
 async def create_processed_agent_data(
     data: List[ProcessedAgentData], service: AgentService
 ):
-    data = await service.create_processed_data(
+    results = await service.create_processed_data(
         [ProcessedAgentDataInDB(**el.model_dump_flat()) for el in data]
     )
-    return data
+    await manager.broadcast([result.model_dump(mode="json") for result in results])
 
 
 @agent_router.get(
