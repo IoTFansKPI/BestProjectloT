@@ -33,7 +33,7 @@ async def read_processed_agent_data(
     return data
 
 
-@agent_router.get("/")
+@agent_router.get("/", response_model=List[ProcessedAgentDataInDB])
 async def list_processed_agent_data(service: AgentService):
     data = await service.list_processed_data()
     return data

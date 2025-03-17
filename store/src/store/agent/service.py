@@ -19,7 +19,10 @@ class AgentService:
         return results
 
     async def list_processed_data(self):
-        return await self._repository.getAll()
+        result = await self._repository.getAll()
+        if not result:
+            raise HTTPException(status_code=404, detail="Not Found")
+        return result
 
     async def getById(self, processed_agent_data_id):
         data = await self._repository.getById(processed_agent_data_id)
