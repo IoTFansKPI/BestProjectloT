@@ -7,6 +7,22 @@ from pydantic import BaseModel, field_validator
 from config import STORE_HOST, STORE_PORT
 
 
+class RoadState:
+    def __init__(self, latitude: float, longitude: float, state: str) -> None:
+        self.latitude: float = latitude
+        self.longitude: float = longitude
+        self.state: str = state
+
+    def is_bump(self) -> bool:
+        return self.state == "bump"
+
+    def is_pothole(self) -> bool:
+        return self.state == "pothole"
+
+    def get_coordinates(self):
+        return (self.latitude, self.longitude)
+
+
 # Pydantic models
 class ProcessedAgentData(BaseModel):
     road_state: str
@@ -71,7 +87,7 @@ class Datasource:
             key=lambda v: v.timestamp,
         )
         new_points = [
-            (
+            RoadState(
                 processed_agent_data.latitude,
                 processed_agent_data.longitude,
                 processed_agent_data.road_state,
