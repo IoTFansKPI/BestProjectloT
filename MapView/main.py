@@ -1,6 +1,6 @@
 import asyncio
 from kivy.app import App
-from kivy_garden.mapview import MapMarker, MapView
+from kivy_garden.mapview import MapMarker, MapView, source
 from kivy.clock import Clock
 from lineMapLayer import LineMapLayer
 from datasource import Datasource
@@ -10,11 +10,11 @@ class MapViewApp(App):
     def __init__(self, **kwargs):
         super().__init__()
         # додати необхідні змінні
-        self.user_id: int = 1
+        self.user_id : int = 1
         self.mapview = MapView()
         self.map_layer = LineMapLayer()
-        self.datasource: Datasource = Datasource(self.user_id)
-        self.car_marker = MapMarker(source="images/car.png")
+        self.datasource : Datasource = Datasource(self.user_id)
+        self.car_marker = MapMarker(source = 'images/car.png')
 
     def on_start(self):
         """
@@ -35,6 +35,11 @@ class MapViewApp(App):
             self.map_layer.add_point(coordinates)
             self.update_car_marker(coordinates)
 
+            if point.is_bump():
+                self.set_pothole_marker(coordinates)
+            elif point.is_pothole():
+                self.set_bump_marker(coordinates)
+
     def update_car_marker(self, point):
         """
         Оновлює відображення маркера машини на мапі
@@ -46,17 +51,26 @@ class MapViewApp(App):
         self.mapview.remove_marker(self.car_marker)
         self.mapview.add_marker(self.car_marker)
 
+
     def set_pothole_marker(self, point):
         """
         Встановлює маркер для ями
         :param point: GPS координати
         """
+        marker = MapMarker(lat=point[0],
+                           lon = point[1],
+                           source = "images/pothole.png")
+        self.mapview.add_marker(marker)
 
     def set_bump_marker(self, point):
         """
         Встановлює маркер для лежачого поліцейського
         :param point: GPS координати
         """
+        marker = MapMarker(lat=point[0],
+                           lon = point[1],
+                           source = "images/bump.png")
+        self.mapview.add_marker(marker)
 
     def build(self):
         """
