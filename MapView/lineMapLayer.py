@@ -1,4 +1,4 @@
-from kivy_garden.mapview import MapLayer, MapMarker
+from kivy_garden.mapview import MapLayer
 from kivy.graphics import Color, Line
 from kivy.graphics.context_instructions import Translate, Scale, PushMatrix, PopMatrix
 from kivy_garden.mapview.utils import clamp
