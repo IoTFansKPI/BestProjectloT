@@ -6,6 +6,7 @@ from app.interfaces.store_gateway import StoreGateway
 from app.entities.agent_data import AccelerometerData, AgentData, GpsData
 from app.usecases.data_processing import process_agent_data_batch
 
+
 class TestAgentMQTTAdapter(unittest.TestCase):
     def setUp(self):
         # Create a mock StoreGateway for testing
@@ -20,6 +21,7 @@ class TestAgentMQTTAdapter(unittest.TestCase):
             redis_client=self.mock_redis,
             batch_size=1,
         )
+
     def test_on_message_valid_data(self):
         # Test handling of valid incoming MQTT message
         # (Assuming data is in the correct JSON format)
@@ -46,6 +48,7 @@ class TestAgentMQTTAdapter(unittest.TestCase):
         self.mock_store_gateway.save_data.assert_called_once_with(
             process_agent_data_batch([expected_agent_data])
         )
+
     def test_on_message_invalid_data(self):
         # Test handling of invalid incoming MQTT message
         # (Assuming data is missing required fields or has incorrect format)
@@ -55,6 +58,7 @@ class TestAgentMQTTAdapter(unittest.TestCase):
         self.agent_adapter.on_message(None, None, mock_msg)
         # Ensure that the store_gateway's save_data method is not called (due to invalid data)
         self.mock_store_gateway.save_data.assert_not_called()
+
 
 if __name__ == "__main__":
     unittest.main()

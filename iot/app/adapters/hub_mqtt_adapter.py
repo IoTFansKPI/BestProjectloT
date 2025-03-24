@@ -1,5 +1,3 @@
-import logging
-
 import requests as requests
 from paho.mqtt import client as mqtt_client
 

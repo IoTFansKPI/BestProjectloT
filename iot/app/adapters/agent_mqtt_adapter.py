@@ -1,7 +1,7 @@
 import logging
 import paho.mqtt.client as mqtt
 from app.interfaces.agent_gateway import AgentGateway
-from app.entities.agent_data import AgentData, GpsData
+from app.entities.agent_data import AgentData
 from app.usecases.data_processing import AgentDataProcessor
 from app.interfaces.hub_gateway import HubGateway
 
@@ -45,7 +45,8 @@ class AgentMQTTAdapter(AgentGateway):
             if processed_data:
                 if not self.hub_gateway.save_data(processed_data):
                     logging.error("Hub is not available")
-            else: logging.info("Not enough data")
+            else:
+                logging.info("Not enough data")
         except Exception as e:
             logging.info(f"Error processing MQTT message: {e}")
 

@@ -14,13 +14,12 @@ class GpsData(BaseModel):
 
 
 class AgentData(BaseModel):
-    user_id: int
     accelerometer: AccelerometerData
     gps: GpsData
-    timestamp: datetime
+    time: datetime
 
     @classmethod
-    @field_validator('timestamp', mode='before')
+    @field_validator("time", mode="before")
     def parse_timestamp(cls, value):
         # Convert the timestamp to a datetime object
         if isinstance(value, datetime):

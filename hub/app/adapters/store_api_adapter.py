@@ -10,6 +10,7 @@ from app.entities.processed_agent_data import ProcessedAgentData
 from app.interfaces.store_api_gateway import StoreGateway
 from config import STORE_API_BASE_URL
 
+
 class StoreApiAdapter(StoreGateway):
     def __init__(self, api_base_url):
         self.api_base_url = api_base_url
@@ -19,9 +20,9 @@ class StoreApiAdapter(StoreGateway):
         data = json.dumps(
             processed_agent_data_batch, default=pydantic_core.to_jsonable_python
         )
-        
-        r = req.post(f"{STORE_API_BASE_URL}/processed_agent_data/", data)
-        
+
+        r = req.post(f"{STORE_API_BASE_URL}/api/v1/processed_agent_data/", data)
+
         if r.status_code == 200:
             return 0
         else:

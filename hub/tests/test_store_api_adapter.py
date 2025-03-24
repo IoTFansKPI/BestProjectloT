@@ -5,10 +5,12 @@ from app.adapters.store_api_adapter import StoreApiAdapter
 from app.entities.agent_data import AccelerometerData, AgentData, GpsData
 from app.entities.processed_agent_data import ProcessedAgentData
 
+
 class TestStoreApiAdapter(unittest.TestCase):
     def setUp(self):
         # Create the StoreApiAdapter instance
         self.store_api_adapter = StoreApiAdapter(api_base_url="http://test-api.com")
+
     @patch.object(requests, "post")
     def test_save_data_success(self, mock_post):
         # Test successful saving of data to the Store API
@@ -38,6 +40,7 @@ class TestStoreApiAdapter(unittest.TestCase):
         )
         # Ensure that the result is True, indicating successful saving
         self.assertTrue(result)
+
     @patch.object(requests, "post")
     def test_save_data_failure(self, mock_post):
         # Test failure to save data to the Store API
@@ -67,6 +70,7 @@ class TestStoreApiAdapter(unittest.TestCase):
         )
         # Ensure that the result is False, indicating failure to save
         self.assertFalse(result)
+
 
 if __name__ == "__main__":
     unittest.main()

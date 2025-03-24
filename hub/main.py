@@ -2,6 +2,7 @@ import logging
 from typing import List
 
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from redis import Redis
 import paho.mqtt.client as mqtt
 
@@ -34,6 +35,15 @@ store_adapter = StoreApiAdapter(api_base_url=STORE_API_BASE_URL)
 
 # FastAPI
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,  # noqa
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+    expose_headers=["Content-Disposition"],
+)
 
 
 @app.post("/processed_agent_data/")

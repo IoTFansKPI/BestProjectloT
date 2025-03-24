@@ -15,4 +15,4 @@ class ProcessedAgent(Base):
     z: Mapped[float] = mapped_column(nullable=False)
     latitude: Mapped[float] = mapped_column(nullable=False)
     longitude: Mapped[float] = mapped_column(nullable=False)
-    timestamp: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    time: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

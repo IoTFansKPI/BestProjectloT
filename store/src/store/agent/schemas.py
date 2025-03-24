@@ -19,10 +19,10 @@ class GpsData(BaseModel):
 class AgentData(BaseModel):
     accelerometer: AccelerometerData
     gps: GpsData
-    timestamp: datetime
+    time: datetime
 
     @classmethod
-    @field_validator("timestamp", mode="before")
+    @field_validator("time", mode="before")
     def check_timestamp(cls, value):
         if isinstance(value, datetime):
             return value
@@ -60,7 +60,7 @@ class ProcessedAgentDataInDB(BaseModel):
     z: float
     latitude: float
     longitude: float
-    timestamp: datetime
+    time: datetime
 
     model_config = ConfigDict(
         from_attributes=True,

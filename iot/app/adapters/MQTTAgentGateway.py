@@ -4,16 +4,17 @@ import paho.mqtt.client as mqtt
 
 from app.interfaces.agent_gateway import AgentGateway
 
+
 class MQTTAgentGateway(AgentGateway):
     """
     A concrete implementation of the AgentGateway using MQTT protocol.
     Connects to an MQTT broker, subscribes to topics, and handles messages.
     """
-    
+
     def __init__(self, broker_host="localhost", broker_port=1883, topic="agent/data"):
         """
         Initialize the MQTT agent gateway.
-        
+
         Parameters:
         broker_host (str): The hostname of the MQTT broker.
         broker_port (int): The port of the MQTT broker.
@@ -28,7 +29,7 @@ class MQTTAgentGateway(AgentGateway):
     def on_message(self, client, userdata, msg):
         """
         Handle incoming messages from the agent.
-        
+
         Parameters:
         client: MQTT client instance.
         userdata: Any additional user data passed to the MQTT client.
@@ -39,21 +40,21 @@ class MQTTAgentGateway(AgentGateway):
             # Decode the message payload
             payload = msg.payload.decode("utf-8")
             logger.info(f"Received message on topic {msg.topic}: {payload}")
-            
+
             # Optionally parse the payload if it's JSON formatted
             try:
                 data = json.loads(payload)
                 logger.info(f"Parsed message data: {data}")
             except json.JSONDecodeError:
                 logger.warning("Message payload is not valid JSON")
-                
+
         except Exception as e:
             logger.error(f"Error processing message: {e}")
 
     def on_connect(self, client, userdata, flags, rc):
         """
         Callback for when the client receives a CONNACK response from the broker.
-        
+
         Parameters:
         client: MQTT client instance.
         userdata: Any additional user data.
@@ -61,7 +62,9 @@ class MQTTAgentGateway(AgentGateway):
         rc: Result code indicating connection status.
         """
         if rc == 0:
-            logger.debug(f"Client: {client}, Userdata: {userdata}, Flags: {flags}, RC: {rc}")
+            logger.debug(
+                f"Client: {client}, Userdata: {userdata}, Flags: {flags}, RC: {rc}"
+            )
             logger.info("Connected to MQTT broker successfully")
             # Subscribe to the topic once connected
             self.client.subscribe(self.topic)
@@ -69,11 +72,10 @@ class MQTTAgentGateway(AgentGateway):
         else:
             logger.error(f"Failed to connect to MQTT broker with code: {rc}")
 
-
     def on_disconnect(self, client, userdata, rc):
         """
         Callback for when the client disconnects from the broker.
-        
+
         Parameters:
         client: MQTT client instance.
         userdata: Any additional user data.
@@ -90,16 +92,18 @@ class MQTTAgentGateway(AgentGateway):
         try:
             # Initialize MQTT client
             self.client = mqtt.Client()
-            
+
             # Set callback functions
             self.client.on_connect = self.on_connect
             self.client.on_disconnect = self.on_disconnect
             self.client.on_message = self.on_message
-            
+
             # Connect to the broker
-            logger.info(f"Connecting to MQTT broker at {self.broker_host}:{self.broker_port}")
+            logger.info(
+                f"Connecting to MQTT broker at {self.broker_host}:{self.broker_port}"
+            )
             self.client.connect(self.broker_host, self.broker_port, keepalive=60)
-            
+
         except Exception as e:
             logger.error(f"Failed to connect to MQTT broker: {e}")
             raise
@@ -110,7 +114,7 @@ class MQTTAgentGateway(AgentGateway):
         """
         if self.client is None:
             self.connect()
-        
+
         try:
             logger.info("Starting MQTT message loop")
             self.is_running = True

@@ -1,4 +1,3 @@
-import math
 from app.entities.agent_data import AgentData
 from app.entities.processed_agent_data import ProcessedAgentData
 
@@ -27,10 +26,16 @@ class AgentDataProcessor:
         next_value = self.z_values[2].accelerometer.z
 
         # filtering of small fluctuations
-        is_valid_delta = (current_value - previous_value) > self.height and self.height < (current_value - next_value)
+        is_valid_delta = (
+            current_value - previous_value
+        ) > self.height and self.height < (current_value - next_value)
 
         # Condition for detecting a bump
-        return previous_value < current_value and current_value > next_value and is_valid_delta
+        return (
+            previous_value < current_value
+            and current_value > next_value
+            and is_valid_delta
+        )
 
     def _is_pothole(self):
         """Checks if there is a pothole on the road."""
@@ -43,10 +48,16 @@ class AgentDataProcessor:
         next_value = self.z_values[2].accelerometer.z
 
         # filtering of small fluctuations
-        is_valid_delta = (previous_value - current_value) > self.height and self.height < (next_value - current_value)
+        is_valid_delta = (
+            previous_value - current_value
+        ) > self.height and self.height < (next_value - current_value)
 
         # Condition for detecting a pothole
-        return previous_value > current_value and current_value < next_value and is_valid_delta
+        return (
+            previous_value > current_value
+            and current_value < next_value
+            and is_valid_delta
+        )
 
     def process(self, data: AgentData):
         self._add_value(data)
